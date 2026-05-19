@@ -72,7 +72,6 @@ def _shape_features(t, prefix=""):
         feats.append(f"hasDigit{prefix}")
     if '-' in t:
         feats.append(f"hasDash{prefix}")
-    # camelCase: has uppercase after the first char
     if any(c.isupper() for c in t[1:]):
         feats.append(f"isCamel{prefix}")
     return feats
