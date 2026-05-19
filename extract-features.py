@@ -15,7 +15,7 @@ def _load_drugbank(path):
     """Return dict mapping lowercase token -> set of entity types it appears in."""
     entries = {}
     try:
-        with open(path) as f:
+        with open(path, encoding='utf-8', errors='ignore') as f:
             for line in f:
                 line = line.strip()
                 if '|' not in line:
@@ -31,7 +31,7 @@ def _load_hsdb(path):
     """Return set of lowercase tokens appearing in HSDB drug names."""
     tokens = set()
     try:
-        with open(path) as f:
+        with open(path, encoding='utf-8', errors='ignore') as f:
             for line in f:
                 for word in line.strip().lower().split():
                     tokens.add(word)
