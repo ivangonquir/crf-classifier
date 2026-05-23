@@ -4,33 +4,33 @@ BASEDIR="lab_resources/DDI"
 
 # convert datasets to feature vectors
 echo "Extracting features..."
-python3 extract-features.py $BASEDIR/data/train/ > train.feat
-python3 extract-features.py $BASEDIR/data/devel/ > devel.feat
+python3 src/extract-features.py $BASEDIR/data/train/ > features/train.feat
+python3 src/extract-features.py $BASEDIR/data/devel/ > features/devel.feat
 
 # train CRF model
 echo "Training CRF model..."
-python3 train-crf.py model.crf < train.feat
+python3 src/train-crf.py models/model.crf < features/train.feat
 # run CRF model
 echo "Running CRF model..."
-python3 predict.py model.crf < devel.feat > devel-CRF.out
+python3 src/predict.py models/model.crf < features/devel.feat > results/devel-CRF.out
 # evaluate CRF results
 echo "Evaluating CRF results..."
-python3 evaluator.py NER $BASEDIR/data/devel devel-CRF.out > devel-CRF.stats
+python3 src/evaluator.py NER $BASEDIR/data/devel results/devel-CRF.out > results/devel-CRF.stats
 
 
 #Extract Classification Features
-cat train.feat | cut -f5- | grep -v ^$ > train.clf.feat
+cat features/train.feat | cut -f5- | grep -v ^$ > features/train.clf.feat
 
 
 # train Naive Bayes model
 echo "Training Naive Bayes model..."
-python3 train-sklearn.py model.joblib vectorizer.joblib < train.clf.feat
+python3 src/train-sklearn.py models/model.joblib models/vectorizer.joblib < features/train.clf.feat
 # run Naive Bayes model
 echo "Running Naive Bayes model..."
-python3 predict-sklearn.py model.joblib vectorizer.joblib < devel.feat > devel-NB.out
-# evaluate Naive Bayes results 
+python3 src/predict-sklearn.py models/model.joblib models/vectorizer.joblib < features/devel.feat > results/devel-NB.out
+# evaluate Naive Bayes results
 echo "Evaluating Naive Bayes results..."
-python3 evaluator.py NER $BASEDIR/data/devel devel-NB.out > devel-NB.stats
+python3 src/evaluator.py NER $BASEDIR/data/devel results/devel-NB.out > results/devel-NB.stats
 
 # remove auxiliary files.
-rm train.clf.feat
+rm features/train.clf.feat

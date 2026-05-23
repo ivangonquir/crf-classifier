@@ -1,0 +1,17 @@
+Feature Ablation Study — CRF on Devel Set
+==========================================
+
+Full system (baseline): Macro F1 = 75.4%
+
+                        brand    drug    drug_n   group   Macro F1   Drop
+------------------------------------------------------------------------------
+Full system             88.9%   92.4%   34.9%    85.5%   75.4%      —
+No shape features       71.7%   92.6%   28.6%    85.2%   69.5%      -5.9%
+No context features     80.7%   90.9%   23.3%    84.1%   69.8%      -5.6%
+No dictionary features  75.7%   90.4%   33.3%    84.9%   71.1%      -4.3%
+No affix features       88.8%   91.7%   28.6%    84.3%   73.3%      -2.1%
+
+Shape features   : isTitle, isUpper, hasDigit, hasDash, isCamel
+Context features : formPrev, formNext + all shape/dict/affix for prev/next token
+Dictionary feats : inDB (DrugBank), inHSDB (HSDB)
+Affix features   : suf3, suf4, pref3, pref4
