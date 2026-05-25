@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 train.clf.feat
 *.xml
+/Delivery
